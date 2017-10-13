@@ -4,7 +4,7 @@
 #include < cstdio >
 #include < cctype >
 #include < fstream >
-#include < vector >
+#include < iomanip >
 #include "Source.h"
 
 
@@ -334,7 +334,7 @@ void displayStats()
 
     for ( int i = 0; i < count; i++ )
     {
-        std::cout << "Word: " << savedWords[i] << "\t Score: " << scores[i] << std::endl;
+        std::cout << "Word: " << std::setw(20) << std::left << savedWords[i] << "\t" << " Score: " << std::setw(5) << scores[i] << std::endl;
     }
 }
 
@@ -384,6 +384,6 @@ void sortStats()
 
     for ( int i = 0; i < count; i++ )
     {
-        std::cout << words[i] << "\t" << scores[i] << std::endl;
+        std::cout <<"Word: " << std::setw(20) << std::left << words[i] << "\t" << "Score: " << std::setw(5) << scores[i] << std::endl;
     }
 }
