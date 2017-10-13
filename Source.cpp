@@ -56,6 +56,7 @@ int main()
                 // Uses user input to get the word
                 std::cout << "Enter the secret word, no peeking player 2!";
                 std::cin >> word;
+				wordPicked = true;
 
                 break;
             }
@@ -63,7 +64,13 @@ int main()
             case 4 :
             {
                 // Play Hangman!
-                hangMan(word);
+				if (wordPicked == true)
+				{
+				 hangMan(word);
+				 break;
+				}
+				else 
+					std::cout << "Please enter a word before playing." << std::endl;
 
                 break;
             }
@@ -82,7 +89,7 @@ int main()
             }
         }
     }
-    while( ( option == 0 ) || ( option == 1 ) || ( option == 2  )|| ( option == 3 ) || ( option == 4 ) || ( option == 5 ));
+    while( option != 4 );
 }
 
 void instructions()
@@ -114,8 +121,8 @@ int hangMan(std::string word)
     std::string unknown(word.length(), '*');
 
     // game continues until out of tries
-    while(wrongAmts < MAX_TRIES)
-    {
+	 while(wrongAmts < MAX_TRIES)
+		{
         std::cout << "Your current score is: " << score;
         std::cout << "\n\n" << unknown;
         std::cout << "\n\nEnter a letter: ";
@@ -155,9 +162,10 @@ int hangMan(std::string word)
             saveGame(word, calcScore(remainder, score));
 
             break;
-        }
+    
+		}
     }
-
+	 
     if(wrongAmts == MAX_TRIES)
     {
         std::cout << "\nGAME OVER" << std::endl;
@@ -233,6 +241,7 @@ std::string pickWord()
     std::cout << "Now choose a word:";
     std::cin >> wordNumber;
 
+	wordPicked = true;
     return words[wordNumber - 1][category - 1];
 }
 
@@ -292,7 +301,7 @@ void statsMain()
             }
         }
     }
-    while( (option == 0 ) || ( option == 1 ) || ( option == 2 ) );
+    while( (option != 0 || option != 2 ) );
 }
 
 int loadStats()
@@ -325,7 +334,7 @@ void displayStats()
 
     for ( int i = 0; i < count; i++ )
     {
-        std::cout << savedWords[i] << "\t" << scores[i] << std::endl;
+        std::cout << "Word: " << savedWords[i] << "\t Score: " << scores[i] << std::endl;
     }
 }
 

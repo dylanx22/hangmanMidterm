@@ -27,6 +27,7 @@ void displayStats();
 
 void sortStats();
 
+bool wordPicked;
 
 
 std::string	word;
