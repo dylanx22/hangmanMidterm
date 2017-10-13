@@ -275,8 +275,8 @@ void statsMain()
             case 0 :
             {
                 // return to main menu
-
-                break;
+				
+                return;
             }
 
             case 1 :
@@ -297,11 +297,11 @@ void statsMain()
 
             default :
             {
-                break;
+                return;
             }
         }
     }
-    while( (option != 0 || option != 2 ) );
+    while( (option != 0) && (option == 1) && (option == 2) );
 }
 
 int loadStats()
