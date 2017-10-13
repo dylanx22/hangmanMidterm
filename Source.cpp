@@ -71,7 +71,7 @@ int main()
             case 5 :
             {
                 // Show recent game statistics
-                statsMenu();
+                statsMain();
 
                 break;
             }
@@ -263,15 +263,14 @@ void statsMain()
 
         switch(option)
         {
-            case 1 :
+            case 0 :
             {
                 // return to main menu
-				displayMenu();
 
                 break;
             }
 
-            case 2 :
+            case 1 :
             {
                 // Show All Games
                 displayStats();
@@ -279,7 +278,7 @@ void statsMain()
                 break;
             }
 
-            case 3 :
+            case 2 :
             {
                 // Sort by length of the word
                 sortStats();
