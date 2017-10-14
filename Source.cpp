@@ -27,11 +27,11 @@ int displayMenu()
 
 int main()
 {
-	int	option	= 0;
+	int	option = 0;
 
 	do
 	{
-		int	option	= displayMenu();
+		int	option = displayMenu();
 
 		switch(option)
 		{
@@ -46,7 +46,7 @@ int main()
 		case GAMESTATE::SELECT_WORD:
 			{
 				// Displays the word choice menu
-				word	= pickWord();
+				word = pickWord();
 
 				break;
 			}
@@ -64,9 +64,10 @@ int main()
 		case GAMESTATE::PLAY_GAME:
 			{
 				// Play Hangman!
-				if (wordPicked == true)
+				if (wordPicked == true) // checks if a word has been picked before allowing user to enter game
 				{
 					hangMan(word);
+
 					break;
 				}
 				else 
@@ -78,13 +79,20 @@ int main()
 		case GAMESTATE::STATS:
 			{
 				// Show recent game statistics
-				statsMain();
-
-				break;
+				if (statsLoaded = false) // load stats if they haven't been loaded yet.
+				{
+					loadStats();
+					statsMain();
+					break;
+				}
+					else
+					statsMain();
+					break;
 			}
 
 		default :
 			{
+
 				break;
 			}
 		}
@@ -105,7 +113,7 @@ void instructions()
 	std::cout << "\n\nThe word is CASE SENSITIVE!";
 	std::cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 #ifdef _WIN32
-	system("pause");
+	system("pause"); //pause console for 32bit
 #endif
 }
 
@@ -162,14 +170,15 @@ int hangMan(std::string word)
 			std::cout << "Congratulations! You win.";
 			std::cout << "You score was: " << calcScore(remainder, score) << std::endl;
 
-			saveGame(word, calcScore(remainder, score));
+			saveGame(word, calcScore(remainder, score)); // saves the game (word and score) using the saveGame function
+													    // score is calculated by adding the remaining guesses to the score at the end of the game.
 
 			break;
 
 		}
 	}
 
-	if(wrongAmts == MAX_TRIES)
+	if(wrongAmts == MAX_TRIES) // ends the game when out of guesses
 	{
 		std::cout << "\nGAME OVER" << std::endl;
 		std::cout << "The word was : " << word << std::endl;
@@ -262,11 +271,9 @@ int statsMenu()
 	return choice;
 }
 
-void statsMain()
+void statsMain() 
 {
 	int	option	= 0;
-
-	loadStats();
 
 	do
 	{
@@ -277,7 +284,7 @@ void statsMain()
 		case Safe::SORTING::SORT_BY_SCORE:
 			{
 				// Sort games by highest score (descending)
-				sortStats(savedWords, scores);
+				sortStats(savedWords, scores, loadStats());
 				break;
 			}
 
@@ -317,12 +324,12 @@ int loadStats()
 		infile >> scores[count];
 
 		count++;
-		total_saves++;
 	}
 
 	infile.close();
 
 	return count;
+	bool statsLoaded = true;
 
 }
 
@@ -336,38 +343,37 @@ void displayStats()
 	}
 }
 
-void sortStats(std::string sortedWords[], int sortedScores[])
+void sortStats(std::string sortedWords[], int sortedScores[], int count)
 {
 
 
 	int	minIdx	= 0;
-	int	count	= total_saves;
 	std::string tempWord = "";
 	int tempScore = 0;
 
 	for ( int i = 0; i < count; i++ )
 	{
-		minIdx	= i;
+		minIdx = i;
 
 		for ( int j = i + 1; j < count; j++ )
 		{
 			if ( (sortedScores[j] > sortedScores[minIdx]) ) // Sort by the score
 			{
-				minIdx	= j;
+				minIdx = j;
 			}
 		}
 
 		if(i != minIdx)										// Swap if needed
 		{
-			std::string	tempWord	= sortedWords[i];
+			std::string	tempWord = sortedWords[i];
 
-			sortedWords[i]	= sortedWords[minIdx];
-			sortedWords[minIdx]	= tempWord;
+			sortedWords[i] = sortedWords[minIdx];
+			sortedWords[minIdx] = tempWord;
 
-			int	tempScore	= scores[i];
+			int	tempScore = scores[i];
 
-			sortedScores[i]		= sortedScores[minIdx];
-			sortedScores[minIdx]	= tempScore;
+			sortedScores[i]	 = sortedScores[minIdx];
+			sortedScores[minIdx] = tempScore;
 		}
 	}
 

@@ -5,7 +5,6 @@ int	MAX_TRIES		= 5;
 
 int	total_guesses	= 0;
 
-int total_saves = 0;
 int matchLetter(char, std::string, std::string &);
 
 int hangMan(std::string word);
@@ -26,9 +25,12 @@ void statsMain();
 
 void displayStats();
 
-void sortStats(std::string sortedWords[], int sortedStats[]);
+void sortStats(std::string sortedWords[], int sortedStats[], int count);
 
 bool wordPicked;
+
+bool statsLoaded;
+
 
 enum GAMESTATE : int { HELP, INTRODUCTION, SELECT_WORD, CUSTOM_WORD, PLAY_GAME, STATS, EXIT };
 

@@ -1,10 +1,4 @@
-rice
-9
-mexico
-11
-photosynthesis
-8
-testing
-11
-gravity
-12
+rice 9
+meatloaf 12
+mindsweep
+13
