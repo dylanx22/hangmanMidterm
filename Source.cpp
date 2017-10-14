@@ -27,7 +27,7 @@ int displayMenu()
 
 int main()
 {
-	int	option = 0;
+	int option = 0;
 
 	do
 	{
@@ -328,8 +328,9 @@ int loadStats()
 
 	infile.close();
 
-	return count;
 	bool statsLoaded = true;
+	return count;
+	
 
 }
 
