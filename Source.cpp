@@ -14,8 +14,8 @@ int displayMenu()
 
 	std::cout << "|_____________________________________________________________________|" << std::endl;
 	std::cout << "| 1. Instructions |\n" << std::endl;
-	std::cout << "| 2. Choose Word |\n" << std::endl;
-	std::cout << "| 3. Enter Custom Word |\n" << std::endl;
+	std::cout << "| 2. Choose Random Word From Category (Single Player Mode) |\n" << std::endl;
+	std::cout << "| 3. Enter Custom Word (Multiplayer Mode) |\n" << std::endl;
 	std::cout << "| 4. Play Hangman! |\n" << std::endl;
 	std::cout << "| 5. View Past Scores | \n" << std::endl;
 	std::cout << "|_____________________________________________________________________|" << std::endl;
@@ -54,8 +54,9 @@ int main()
 		case GAMESTATE::CUSTOM_WORD:
 			{
 				// Uses user input to get the word
-				std::cout << "Enter the secret word, no peeking player 2!";
-				std::cin >> word;
+				std::cout << "Enter the secret word, no peeking player 2: ";
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::getline(std::cin, word);
 				wordPicked = true;
 
 				break;
@@ -109,6 +110,7 @@ void instructions()
 	std::cout << "\n\nPick a word from the menu, then let a friend try to guess it!";
 	std::cout << "\n\nOr you can enter your own custom word if you prefer.";
 	std::cout << "\n\nEach letter is represented by a star.";
+	std::cout << "\n\nSpaces will be represented by a star as well, but will be auto-guessed.";
 	std::cout << "\n\nType in one letter each turn";
 	std::cout << "\n\nThe word is CASE SENSITIVE!";
 	std::cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
@@ -130,6 +132,12 @@ int hangMan(std::string word)
 
 	// replace secret word with *****
 	std::string unknown(word.length(), '*');
+	// detect spaces in the word
+	for (char& c : word) { 
+    if ( std::isspace(c) ) {
+        c = '*';
+    }
+}
 
 	// game continues until out of tries
 	while(wrongAmts < MAX_TRIES)
@@ -158,7 +166,7 @@ int hangMan(std::string word)
 		}
 
 		// display remaining guesses
-		std::cout << MAX_TRIES - wrongAmts << " guesses remaining." << std::endl;
+		std::cout << MAX_TRIES - wrongAmts << " wrong guesses remaining." << std::endl;
 
 		// Check if the user has guessed correctly
 		// if so, calculate and display final score.
@@ -167,8 +175,8 @@ int hangMan(std::string word)
 		if(word == unknown)
 		{
 			std::cout << word << std::endl;
-			std::cout << "Congratulations! You win.";
-			std::cout << "You score was: " << calcScore(remainder, score) << std::endl;
+			std::cout << "Congratulations! You win." << std::endl;
+			std::cout << "Your score was: " << calcScore(remainder, score) << std::endl;
 
 			saveGame(word, calcScore(remainder, score)); // saves the game (word and score) using the saveGame function
 													    // score is calculated by adding the remaining guesses to the score at the end of the game.
@@ -216,7 +224,7 @@ int matchLetter(char guess, std::string secret, std::string & guessword) // Chec
 	return matches;
 }
 
-void saveGame(std::string pastWord, double score)	// saves the word and the score to a text file. (Up to 10 past games will be saved)
+void saveGame(std::string &pastWord, double score)	// saves the word and the score to a text file. (Up to 10 past games will be saved)
 {
 	std::ofstream stats;
 	stats.open("stats.txt", std::ofstream::out | std::ofstream::app);
@@ -231,7 +239,7 @@ int calcScore(int r, int s)	// gets the remaining guesses and the score at end o
 	return r + s;
 }
 
-std::string pickWord() // Shows the categories, takes input then shows the list of words in the selected category.
+std::string pickWord() // Pick a category, then the game chooses a random word from that category.
 {
 	int	category, wordNumber;
 	int	r, c;
@@ -244,16 +252,15 @@ std::string pickWord() // Shows the categories, takes input then shows the list 
 	std::cout << "Enter a category:";
 	std::cin >> category;
 
+	/*
 	for ( r = 1; r < 6; r++ )
 	{
-		std::cout << r + 1 << ". " << words[r][category - 1] << std::endl;
+		std::cout << r + 1 << ". " << words[r][category - 1] << std::endl; // code to choose words manually. decided to make pickWord a single player option, so the user doesn't know the word ahead of time.
 	}
-
-	std::cout << "Now choose a word:";
-	std::cin >> wordNumber;
-
+	*/
+	std::cout << "Picking a random " << category << " for your hangman game!" << std::endl;
 	wordPicked = true;
-	return words[wordNumber - 1][category - 1];
+	return words[rand() % 6][category - 1];
 }
 
 int statsMenu()

@@ -1,4 +1,14 @@
-rice 9
-meatloaf 12
-mindsweep
-13
+meatloaf
+9
+chocolate
+11
+header
+7
+test*word
+12
+two*words
+11
+meatloaf
+10
+gravity
+12

@@ -17,7 +17,7 @@ int loadStats();
 
 void instructions();
 
-void saveGame(std::string, double);
+void saveGame(std::string&, double);
 
 void recentGames();
 
@@ -64,5 +64,5 @@ std::string	words[6][5]	=
 
 std::string pickWord();
 
-std::string	savedWords[10];
-int			scores[10];
+std::string	savedWords[50];
+int			scores[50];
